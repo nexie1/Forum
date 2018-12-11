@@ -130,19 +130,21 @@ function selectAll() {
 }*/
 
 function DelUser($id) {
-    $sql = 'DELETE FROM utilisateur WHERE idUtilisateur = :idUtilisateur';
+    $sql = 'DELETE FROM utilisateur WHERE idPersonne = :idPersonne';
     $dbQuery = EDatabase::getInstance()->prepare($sql);
-    $dbQuery->bindParam(':idUtilisateur', $id);
+    $dbQuery->bindParam(':idPersonne', $id);
     $dbQuery->execute();
 }
 
 function UpdateUsers($infoModif) {
-    $sql = 'UPDATE `utilisateur` SET `prenom`= :prenom ,`nom`= :nom,`courriel`= :courriel WHERE idUtilisateur = :idUtilisateur';
+    $sql = 'UPDATE `utilisateur` SET `prenom`= :prenom ,`nom`= :nom,`email`= :email,`date_naissance`= :date_naissance,`adresse`= :adresse WHERE idPersonne = :idPersonne';
     $dbQuery = EDatabase::getInstance()->prepare($sql);
-    $dbQuery->bindParam(':idUtilisateur', $infoModif["idModif"]);
+    $dbQuery->bindParam(':idPersonne', $infoModif["idModif"]);
     $dbQuery->bindParam(':prenom', $infoModif["prenomModif"]);
     $dbQuery->bindParam(':nom', $infoModif["nomModif"]);
-    $dbQuery->bindParam(':courriel', $infoModif["emailModif"]);
+    $dbQuery->bindParam(':email', $infoModif["emailModif"]);
+    $dbQuery->bindParam(':date_naissance', $infoModif["date_naissanceModif"]);
+    $dbQuery->bindParam(':adresse', $infoModif["adresseModif"]);
     $dbQuery->execute();
 }
 function selectUserById($slt) {

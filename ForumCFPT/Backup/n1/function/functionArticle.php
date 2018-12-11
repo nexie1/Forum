@@ -101,3 +101,4 @@ function articlePrive()
         echo '</article>';
     }
 }
+?>

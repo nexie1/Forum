@@ -26,7 +26,7 @@ function manageUtilisateurs() {
                             <td class="manaUtili"><?php echo $row["courriel"]; ?></td>
                             <td class="manaUtili"><?php echo $row["statut"]; ?> </td>
                     <form method="post">
-                        <td class="manaUtili"><a href="index.php?page=ManageUsers&SendSupprimer&id=<?php echo $row["idUtilisateur"]; ?>">Supprimer</a></td>  
+                        <td class="manaUtili"><a href="fonctions/manageUserFonction.php?SendSupprimer&id=<?php echo $row["idUtilisateur"]; ?>">Supprimer</a></td>  
                         <td class="manaUtili"><a href="index.php?page=ModifUsers&id=<?php echo $row["idUtilisateur"]; ?>">Modifier</a></td>
                     </form>
                     </tr>
@@ -43,7 +43,7 @@ function manageModifUtilisateurs() {
     $slt["id"] = $_GET["id"];
     $result = selectUserById($slt);
     ?> 
-<FORM method="post" action="#">
+    <FORM method="post" action="fonctions/manageFonction.php">
         <TABLE>
             <?php foreach ($result as $row) { ?>
             <?php } ?>
@@ -70,5 +70,5 @@ function manageModifUtilisateurs() {
             </TR>
         </TABLE>
     </FORM>  
-    <?php 
+    <?php
 }

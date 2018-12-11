@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Auteur       : Fernandes Marco
  * Description  : Forum du CFPT
@@ -11,3 +12,4 @@ if (isset($_POST["deconnexion"])) {
     session_destroy();
     header('Location: ' . $_SERVER['REQUEST_URI']);
 }
+?>

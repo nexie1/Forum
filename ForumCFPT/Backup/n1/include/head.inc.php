@@ -11,6 +11,6 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>CFPT - Forum</title>
+        <title>Loutre</title>
         <link rel="stylesheet" type="text/css" href="./css/style.css">
     </head>

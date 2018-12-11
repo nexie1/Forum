@@ -32,17 +32,6 @@ $article[$CONTENU_ART] = (isset($_POST[$CONTENU_ART]) ? $article[$CONTENU_ART] =
 $article[$STATUT_ART] = (isset($_POST[$STATUT_ART]) ? $article[$STATUT_ART] = filter_var($_POST[$STATUT_ART], FILTER_VALIDATE_INT) : $article[$STATUT_ART] = "");
 $article[$DATE_ART] = date('Y-m-d');
 
-$ID_MODIF = "idModif";
-$PRENOM_MODIF = "prenomModif";
-$NOM_MODIF = "nomModif";
-$PASSWORD_MODIF = "passwordModif";
-$EMAIL_MODIF = "emailModif";
-
-$infoModif[$ID_MODIF] = (isset($_POST[$ID_MODIF]) ? $infoModif[$ID_MODIF] = filter_input(INPUT_POST, $ID_MODIF, FILTER_SANITIZE_STRING) : $infoModif[$ID_MODIF] = "");
-$infoModif[$PRENOM_MODIF] = (isset($_POST[$PRENOM_MODIF]) ? $infoModif[$PRENOM_MODIF] = filter_input(INPUT_POST, $PRENOM_MODIF, FILTER_SANITIZE_STRING) : $infoModif[$PRENOM_MODIF] = "");
-$infoModif[$NOM_MODIF] = (isset($_POST[$NOM_MODIF]) ? $infoModif[$NOM_MODIF] = filter_input(INPUT_POST, $NOM_MODIF, FILTER_SANITIZE_STRING) : $infoModif[$NOM_MODIF] = "");
-$infoModif[$EMAIL_MODIF] = (isset($_POST[$EMAIL_MODIF]) ? $infoModif[$EMAIL_MODIF] = filter_input(INPUT_POST, $EMAIL_MODIF, FILTER_SANITIZE_STRING) : $infoModif[$EMAIL_MODIF] = "");
-
 //Appelent les pages pour les fonctions php
 require_once './function/pdoConnection.php';
 require_once './function/fonctionDatabase.php';
