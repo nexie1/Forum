@@ -74,7 +74,7 @@ function addArticle($article) {
  */
 function getArticlesUser($idUtilisateur) {
     try {
-        $sql = "SELECT * FROM `articles` WHERE idUtilisateur = :idUtilisateur AND `statutArticles` = 1";
+        $sql = "SELECT * FROM `articles` WHERE idUtilisateur = :idUtilisateur";
         $dbQuery = EDatabase::getInstance()->prepare($sql);
         $dbQuery->bindParam(':idUtilisateur', $idUtilisateur);
         $dbQuery->execute();
@@ -172,14 +172,5 @@ function UpdateModifiedArticlesUserById($infoModifArticles) {
     $dbQuery->bindParam(':titre', $infoModifArticles["titreModifArticles"]);
     $dbQuery->bindParam(':contenu', $infoModifArticles["contenuModifArticles"]);
     //$dbQuery->bindParam(':courriel', $infoModifArticles["emailModif"]);
-    $dbQuery->execute();
-}
-
-
-function CacheArticleById($idArt) {     
-    
-    $sql = 'UPDATE `articles` SET`statutArticles`= "2" WHERE `idArticles`= :idArt ';
-    $dbQuery = EDatabase::getInstance()->prepare($sql);
-    $dbQuery->bindParam(':idArt', $idArt);
     $dbQuery->execute();
 }

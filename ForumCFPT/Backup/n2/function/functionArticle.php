@@ -33,11 +33,7 @@ function articleUser($pseudo) {
                     <td colspan="2" style="padding-top: 10px;"><fieldset> <?php echo $value["contenu"] ?></fieldset></td>
                 </tr>
                 <tr>
-                    <td colspan="2" style="text-align: right;"><a href="index.php?page=ModifMesArticles&idModifMyArticle=<?php echo $value["idArticles"] ?>">
-                            <input type="button" name="ModifMyArticles" value="Modifier votre article"></a>
-                        
-                        <a href="index.php?page=CacheArticle&CacheArticleById=<?php echo $value["idArticles"] ?>"><input type="submit" name="DelMyArticles" value="Supprimer votre article"></a>
-                    </td>           
+                    <td colspan="2" style="text-align: right;"><a href="index.php?page=ModifMesArticles&idModifMyArticle=<?php echo $value["idArticles"] ?>"><input type="button" name="ModifMyArticles" value="Modifier votre article"></a><a href="index.php?page=SupprimeMesArticles"><input type="submit" name="DelMyArticles" value="Supprimer votre article"></a></td>           
                 </tr>
             </table>
         </article>

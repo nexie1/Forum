@@ -99,11 +99,5 @@ switch ($page) {
     case "ModifMesArticles":
         include './include/formModifMesArticles.inc.php';
         break;
-    case "CacheArticle":
-        if (isset($_GET["CacheArticleById"])) {
-            CacheArticleById($_GET["CacheArticleById"]);
-            header('Location: ./index.php?page=MesArticles');
-        }
-        break;
 }
 include './include/footer.inc.php';
