@@ -105,5 +105,9 @@ switch ($page) {
             header('Location: ./index.php?page=MesArticles');
         }
         break;
+    case "DeleteAllArticles":
+        CacheAllArticles($_GET["HideAllArticles"]);
+        header('Location: ./index.php?page=Index');
+        break;
 }
 include './include/footer.inc.php';

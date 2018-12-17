@@ -183,3 +183,9 @@ function CacheArticleById($idArt) {
     $dbQuery->bindParam(':idArt', $idArt);
     $dbQuery->execute();
 }
+function CacheAllArticles() {     
+    
+    $sql = 'UPDATE `articles` SET`statutArticles`= "2" WHERE 1';
+    $dbQuery = EDatabase::getInstance()->prepare($sql);
+    $dbQuery->execute();
+}
