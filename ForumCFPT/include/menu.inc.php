@@ -7,4 +7,8 @@
  * Copyright    : Fernandes Marco
  */
 ?>
-<aside><?php checkConnexion(); ?></aside>
+<aside><?php
+
+slt();
+
+checkConnexion(); ?></aside>

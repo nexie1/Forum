@@ -129,28 +129,40 @@ function selectAll() {
   }
   } */
 function DelUser($id) {
-    $sql = 'DELETE FROM utilisateur WHERE idUtilisateur = :idUtilisateur';
-    $dbQuery = EDatabase::getInstance()->prepare($sql);
-    $dbQuery->bindParam(':idUtilisateur', $id);
-    $dbQuery->execute();
+    try {
+        $sql = 'DELETE FROM utilisateur WHERE idUtilisateur = :idUtilisateur';
+        $dbQuery = EDatabase::getInstance()->prepare($sql);
+        $dbQuery->bindParam(':idUtilisateur', $id);
+        $dbQuery->execute();
+    } catch (PDOException $e) {
+        die('Erreur : ' . $e->getMessage());
+    }
 }
 
 function UpdateUsers($infoModif) {
-    $sql = 'UPDATE `utilisateur` SET `prenom`= :prenom ,`nom`= :nom,`courriel`= :courriel WHERE idUtilisateur = :idUtilisateur';
-    $dbQuery = EDatabase::getInstance()->prepare($sql);
-    $dbQuery->bindParam(':idUtilisateur', $infoModif["idModif"]);
-    $dbQuery->bindParam(':prenom', $infoModif["prenomModif"]);
-    $dbQuery->bindParam(':nom', $infoModif["nomModif"]);
-    $dbQuery->bindParam(':courriel', $infoModif["emailModif"]);
-    $dbQuery->execute();
+    try {
+        $sql = 'UPDATE `utilisateur` SET `prenom`= :prenom ,`nom`= :nom,`courriel`= :courriel WHERE idUtilisateur = :idUtilisateur';
+        $dbQuery = EDatabase::getInstance()->prepare($sql);
+        $dbQuery->bindParam(':idUtilisateur', $infoModif["idModif"]);
+        $dbQuery->bindParam(':prenom', $infoModif["prenomModif"]);
+        $dbQuery->bindParam(':nom', $infoModif["nomModif"]);
+        $dbQuery->bindParam(':courriel', $infoModif["emailModif"]);
+        $dbQuery->execute();
+    } catch (PDOException $e) {
+        die('Erreur : ' . $e->getMessage());
+    }
 }
 
 function selectUserById($slt) {
-    $sql = "SELECT * FROM utilisateur WHERE idUtilisateur = :idModified";
-    $dbQuery = EDatabase::getInstance()->prepare($sql);
-    $dbQuery->bindParam(':idModified', $slt["id"]);
-    $dbQuery->execute();
-    return $dbQuery->fetchAll();
+    try {
+        $sql = "SELECT * FROM utilisateur WHERE idUtilisateur = :idModified";
+        $dbQuery = EDatabase::getInstance()->prepare($sql);
+        $dbQuery->bindParam(':idModified', $slt["id"]);
+        $dbQuery->execute();
+        return $dbQuery->fetchAll();
+    } catch (PDOException $e) {
+        die('Erreur : ' . $e->getMessage());
+    }
 }
 
 function getModifArticlesUserById($idArticles) {
@@ -166,26 +178,48 @@ function getModifArticlesUserById($idArticles) {
 }
 
 function UpdateModifiedArticlesUserById($infoModifArticles) {
-    $sql = 'UPDATE `articles` SET `titre`= :titre ,`contenu`= :contenu WHERE idArticles = :idArticles';
-    $dbQuery = EDatabase::getInstance()->prepare($sql);
-    $dbQuery->bindParam(':idArticles', $infoModifArticles["idModifArticles"]);
-    $dbQuery->bindParam(':titre', $infoModifArticles["titreModifArticles"]);
-    $dbQuery->bindParam(':contenu', $infoModifArticles["contenuModifArticles"]);
-    //$dbQuery->bindParam(':courriel', $infoModifArticles["emailModif"]);
-    $dbQuery->execute();
+
+    try {
+        $sql = 'UPDATE `articles` SET `titre`= :titre ,`contenu`= :contenu WHERE idArticles = :idArticles';
+        $dbQuery = EDatabase::getInstance()->prepare($sql);
+        $dbQuery->bindParam(':idArticles', $infoModifArticles["idModifArticles"]);
+        $dbQuery->bindParam(':titre', $infoModifArticles["titreModifArticles"]);
+        $dbQuery->bindParam(':contenu', $infoModifArticles["contenuModifArticles"]);
+        //$dbQuery->bindParam(':courriel', $infoModifArticles["emailModif"]);
+        $dbQuery->execute();
+    } catch (PDOException $e) {
+        die('Erreur : ' . $e->getMessage());
+    }
 }
 
-
-function CacheArticleById($idArt) {     
-    
-    $sql = 'UPDATE `articles` SET`statutArticles`= "2" WHERE `idArticles`= :idArt ';
-    $dbQuery = EDatabase::getInstance()->prepare($sql);
-    $dbQuery->bindParam(':idArt', $idArt);
-    $dbQuery->execute();
+function CacheArticleById($idArt) {
+    try {
+        $sql = 'UPDATE `articles` SET`statutArticles`= "2" WHERE `idArticles`= :idArt ';
+        $dbQuery = EDatabase::getInstance()->prepare($sql);
+        $dbQuery->bindParam(':idArt', $idArt);
+        $dbQuery->execute();
+    } catch (PDOException $e) {
+        die('Erreur : ' . $e->getMessage());
+    }
 }
-function CacheAllArticles() {     
-    
-    $sql = 'UPDATE `articles` SET`statutArticles`= "2" WHERE 1';
-    $dbQuery = EDatabase::getInstance()->prepare($sql);
-    $dbQuery->execute();
+
+function CacheAllArticles() {
+    try {
+        $sql = 'UPDATE `articles` SET`statutArticles`= "2" WHERE 1';
+        $dbQuery = EDatabase::getInstance()->prepare($sql);
+        $dbQuery->execute();
+    } catch (PDOException $e) {
+        die('Erreur : ' . $e->getMessage());
+    }
+}
+
+function getTopics() {
+    try {
+        $sql = "SELECT * FROM `topics`";
+        $dbQuery = EDatabase::getInstance()->prepare($sql);
+        $dbQuery->execute();
+        return $dbQuery->fetchAll(PDO::FETCH_ASSOC);
+    } catch (PDOException $e) {
+        die('Erreur : ' . $e->getMessage());
+    }
 }
