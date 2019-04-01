@@ -7,63 +7,18 @@
  * Date         : 10.10.2018
  * Copyright    : Fernandes Marco
  */
-
 session_start();
-$PSEUDO = "pseudo";
-$NOM = "nom";
-$PRENOM = "prenom";
-$COURRIEL = "courriel";
-$MOTDEPASSE = "motDePasse";
 
-//Filtre les entrées des formulaires du site pour eviter l'injection
-$info[$PSEUDO] = (isset($_POST[$PSEUDO]) ? $info[$PSEUDO] = filter_var($_POST[$PSEUDO], FILTER_SANITIZE_STRING) : $info[$PSEUDO] = "");
-$info[$NOM] = (isset($_POST[$NOM]) ? $info[$NOM] = filter_var($_POST[$NOM], FILTER_SANITIZE_STRING) : $info[$NOM] = "");
-$info[$PRENOM] = (isset($_POST[$PRENOM]) ? $info[$PRENOM] = filter_var($_POST[$PRENOM], FILTER_SANITIZE_STRING) : $info[$PRENOM] = "");
-$info[$COURRIEL] = (isset($_POST[$COURRIEL]) ? $info[$COURRIEL] = filter_var($_POST[$COURRIEL], FILTER_SANITIZE_EMAIL) : $info[$COURRIEL] = "");
-$info[$MOTDEPASSE] = (isset($_POST[$MOTDEPASSE]) ? $info[$MOTDEPASSE] = hash("sha1", filter_var($_POST[$MOTDEPASSE], FILTER_SANITIZE_STRING)) : $info[$MOTDEPASSE] = "");
+require_once './new_functions/filter_input.php';
+require_once './new_functions/pdoConnection.php';
+require_once './new_functions/fonctionDatabase.php';
+require_once './new_functions/checkFom.php';
+require_once './new_functions/login.php';
 
-$TITRE_ART = "titre";
-$CONTENU_ART = "contenu";
-$STATUT_ART = "statutArticles";
-$DATE_ART = "dateArticles";
-
-$article[$TITRE_ART] = (isset($_POST[$TITRE_ART]) ? $article[$TITRE_ART] = filter_var($_POST[$TITRE_ART], FILTER_SANITIZE_STRING) : $article[$TITRE_ART] = "");
-$article[$CONTENU_ART] = (isset($_POST[$CONTENU_ART]) ? $article[$CONTENU_ART] = filter_var($_POST[$CONTENU_ART], FILTER_SANITIZE_STRING) : $article[$CONTENU_ART] = "");
-$article[$STATUT_ART] = (isset($_POST[$STATUT_ART]) ? $article[$STATUT_ART] = filter_var($_POST[$STATUT_ART], FILTER_VALIDATE_INT) : $article[$STATUT_ART] = "");
-$article[$DATE_ART] = date('Y-m-d');
-
-$ID_MODIF = "idModif";
-$PRENOM_MODIF = "prenomModif";
-$NOM_MODIF = "nomModif";
-$PASSWORD_MODIF = "passwordModif";
-$EMAIL_MODIF = "emailModif";
-
-$infoModif[$ID_MODIF] = (isset($_POST[$ID_MODIF]) ? $infoModif[$ID_MODIF] = filter_input(INPUT_POST, $ID_MODIF, FILTER_SANITIZE_STRING) : $infoModif[$ID_MODIF] = "");
-$infoModif[$PRENOM_MODIF] = (isset($_POST[$PRENOM_MODIF]) ? $infoModif[$PRENOM_MODIF] = filter_input(INPUT_POST, $PRENOM_MODIF, FILTER_SANITIZE_STRING) : $infoModif[$PRENOM_MODIF] = "");
-$infoModif[$NOM_MODIF] = (isset($_POST[$NOM_MODIF]) ? $infoModif[$NOM_MODIF] = filter_input(INPUT_POST, $NOM_MODIF, FILTER_SANITIZE_STRING) : $infoModif[$NOM_MODIF] = "");
-$infoModif[$EMAIL_MODIF] = (isset($_POST[$EMAIL_MODIF]) ? $infoModif[$EMAIL_MODIF] = filter_input(INPUT_POST, $EMAIL_MODIF, FILTER_SANITIZE_STRING) : $infoModif[$EMAIL_MODIF] = "");
-
-$id_ModifArticles = "idModifArticles";
-$titre_ModifArticles = "titreModifArticles";
-$contenu_ModifArticles = "contenuModifArticles";
-
-$infoModifArticles[$id_ModifArticles] = (isset($_POST[$id_ModifArticles]) ? $infoModifArticles[$id_ModifArticles] = filter_input(INPUT_POST, $id_ModifArticles, FILTER_SANITIZE_STRING) : $infoModifArticles[$id_ModifArticles] = "");
-$infoModifArticles[$titre_ModifArticles] = (isset($_POST[$titre_ModifArticles]) ? $infoModifArticles[$titre_ModifArticles] = filter_input(INPUT_POST, $titre_ModifArticles, FILTER_SANITIZE_STRING) : $infoModifArticles[$titre_ModifArticles] = "");
-$infoModifArticles[$contenu_ModifArticles] = (isset($_POST[$contenu_ModifArticles]) ? $infoModifArticles[$contenu_ModifArticles] = filter_input(INPUT_POST, $contenu_ModifArticles, FILTER_SANITIZE_STRING) : $infoModifArticles[$contenu_ModifArticles] = "");
-
-
-//Appelent les pages pour les fonctions php
-require_once './function/pdoConnection.php';
-require_once './function/fonctionDatabase.php';
-require_once './function/deconnexion.php';
-require_once './function/checkFom.php';
-require_once './function/login.php';
-
-//Appelent les pages pour le code html
-include './include/head.inc.php';
-include './include/header.inc.php';
-include './include/nav.inc.php';
-include './include/menu.inc.php';
+include './new_includes/head.inc.php';
+include './new_includes/header.inc.php';
+include './new_includes/nav.inc.php';
+include './new_includes/menu.inc.php';
 
 //Au chargement du site met la page index en paramètre GET pour que le switch fonctionne
 $page = (isset($_GET['page']) ? $page = $_GET['page'] : $page = "");
@@ -76,28 +31,68 @@ if ($page == "") {
 //Switch de changement de page
 switch ($page) {
     case "Index":
-        include './include/article.inc.php';
+        include './new_includes/article.inc.php';
         break;
+
+
     case "MesArticles":
-        include './include/article.inc.php';
+        include './new_includes/article.inc.php';
         break;
+
+
     case "CreerArticle":
-        include './include/formArticle.inc.php';
+        include './new_includes/formArticle.inc.php';
+        //Vérifie si l'article est rempli
+        if (isset($_POST["SubArticle"])) {
+            addArticle($article);
+            header('Location: ./index.php?page=MesArticles');
+        }
         break;
+
+
     case "Inscritpion":
-        include './include/formInscription.inc.php';
+        include './new_includes/formInscription.inc.php';
         break;
+
+
     case "Login":
-        include './include/formLogin.inc.php';
+        include './new_includes/formLogin.inc.php';
         break;
+
+
     case "ManageUsers":
-        include './include/formUtilisateurs.inc.php';
+        $result = selectAll();
+        include './new_includes/formUtilisateurs.inc.php';
         break;
+
+    case "SupprUsers":
+        $idUser = $_GET["id"];
+        DelUser($idUser);
+        header('Location: ./index.php?page=ManageUsers');
+        break;
+
+
     case "ModifUsers":
-        include './include/formModifUtilisateurs.inc.php';
+        if (isset($_POST["SendModifier"])) {
+            UpdateUsers($infoModif);
+            header('Location: ./index.php?page=ManageUsers');
+        }
+        $slt["id"] = $_GET["id"];
+        $result = selectUserById($slt);
+        include './new_includes/formModifUtilisateurs.inc.php';
+
         break;
+
+
     case "ModifMesArticles":
-        include './include/formModifMesArticles.inc.php';
+        $idArticles = $_GET["idModifMyArticle"];
+        $tableArticlesUser = getModifArticlesUserById($idArticles);
+        include './new_includes/formModifMesArticles.inc.php';
+        if (isset($_POST["ValidModifArticle"])) {
+            UpdateModifiedArticlesUserById($infoModifArticles);
+            header('Location: ./index.php?page=MesArticles');
+        }
+
         break;
     case "CacheArticle":
         if (isset($_GET["CacheArticleById"])) {
@@ -105,9 +100,14 @@ switch ($page) {
             header('Location: ./index.php?page=MesArticles');
         }
         break;
+
     case "DeleteAllArticles":
         CacheAllArticles($_GET["HideAllArticles"]);
         header('Location: ./index.php?page=Index');
         break;
+
+    case "deco":
+        include_once './new_functions/deconnexion.php';
+        break;
 }
-include './include/footer.inc.php';
+include './new_includes/footer.inc.php';
