@@ -1,10 +1,9 @@
 <?php
-
 /*
  * Auteur       : Fernandes Marco
  * Description  : Forum du CFPT
- * Version      : 3.0.0
- * Date         : 10.10.2018
+ * Version      : 1.0.0
+ * Date         : 07.05.2019
  * Copyright    : Fernandes Marco
  */
 
@@ -15,13 +14,13 @@
  */
 function addUser($info) {
     try {
-        $sql = "INSERT INTO `utilisateur`(`pseudo`, `nom`, `prenom`, `courriel`, `motDePasse`, `statut`) VALUES (:pseudo, :nom, :prenom, :courriel, :motDePasse, 1)";
+        $sql = "INSERT INTO `users`(`pseudo`, `last_name`, `first_name`, `email`, `password`, `is_admin`, `is_active`) VALUES (:pseudo, :last_name, :first_name, :email, :password,1,1)";
         $dbQuery = EDatabase::getInstance()->prepare($sql);
         $dbQuery->bindParam(':pseudo', $info["pseudo"]);
-        $dbQuery->bindParam(':nom', $info["nom"]);
-        $dbQuery->bindParam(':prenom', $info["prenom"]);
-        $dbQuery->bindParam(':courriel', $info["courriel"]);
-        $dbQuery->bindParam(':motDePasse', $info["motDePasse"]);
+        $dbQuery->bindParam(':last_name', $info["last_name"]);
+        $dbQuery->bindParam(':first_name', $info["first_name"]);
+        $dbQuery->bindParam(':email', $info["email"]);
+        $dbQuery->bindParam(':password', $info["password"]);   
         $dbQuery->execute();
         return EDatabase::getInstance()->lastInsertId();
     } catch (PDOException $e) {
@@ -36,7 +35,7 @@ function addUser($info) {
  */
 function getUser($info) {
     try {
-        $sql = "SELECT * FROM `utilisateur` WHERE pseudo = :pseudo";
+        $sql = "SELECT * FROM `users` WHERE pseudo = :pseudo";
         $dbQuery = EDatabase::getInstance()->prepare($sql);
         $dbQuery->bindParam(':pseudo', $info["pseudo"]);
         $dbQuery->execute();
@@ -51,20 +50,34 @@ function getUser($info) {
  * @param type $article tableau qui contient les données de l'article
  * @return type
  */
-function addArticle($article) {
+function addArticle($article,$id_topic) {
     try {
-        $sql = "INSERT INTO `articles`(`titre`, `contenu`, `dateArticles`, `statutArticles`, `idUtilisateur`) VALUES (:titre, :contenu, :dateArticles,1,:idUtilisateur)";
+        $sql = "INSERT INTO `articles`(`title`, `content`, `creation_date`,`id_topic`,`id_user`,`is_active`) VALUES (:title, :content, :creation_date,:id_topic,:id_user,1)";
         $dbQuery = EDatabase::getInstance()->prepare($sql);
-        $dbQuery->bindParam(':titre', $article["titre"]);
-        $dbQuery->bindParam(':contenu', $article["contenu"]);
-        $dbQuery->bindParam(':dateArticles', $article["dateArticles"]);
-        //$dbQuery->bindParam(':statutArticles', date_format($article["statutArticles"], "Y-d-m"));
-        $dbQuery->bindParam(':idUtilisateur', $_SESSION["idUtilisateur"]);
+        $dbQuery->bindParam(':title', $article["title"]);
+        $dbQuery->bindParam(':content', $article["content"]);
+        $dbQuery->bindParam(':creation_date', $article["creation_date"]);
+        $dbQuery->bindParam(':id_topic', $id_topic);
+        $dbQuery->bindParam(':id_user', $_SESSION["id_user"]);
         $dbQuery->execute();
         return EDatabase::getInstance()->lastInsertId();
     } catch (PDOException $e) {
         die('Erreur : ' . $e->getMessage());
     }
+}
+
+function addCom($info) {
+
+    $sql = "INSERT INTO `comments`(`id_comment`,`content`,`creation_date`,`id_user`,`id_article`) VALUES ('',:content,:creation_date,:id_user,:id_article)";
+    $dbQuery = EDatabase::getInstance()->prepare($sql);
+
+    $dbQuery->bindParam(':content', $info["content"]);
+    $dbQuery->bindParam(':creation_date', $info["creation_date"]);
+    $dbQuery->bindParam(':id_user', $info["id_user"]);
+    $dbQuery->bindParam(':id_article', $info["id_article"]);
+    $dbQuery->bindParam(':id_user', $_SESSION["id_user"]);
+    $dbQuery->execute();
+    return EDatabase::getInstance()->lastInsertId();
 }
 
 /**
@@ -74,9 +87,44 @@ function addArticle($article) {
  */
 function getArticlesUser($idUtilisateur) {
     try {
-        $sql = "SELECT * FROM `articles` LEFT JOIN `utilisateur` ON `articles`.`idUtilisateur` = `utilisateur`.`idUtilisateur` WHERE `utilisateur`.idUtilisateur = :idUtilisateur AND `statutArticles` = 1";
+        $sql = "SELECT * FROM `articles` LEFT JOIN `users` ON `articles`.`id_user` = `users`.`id_user` WHERE `users`.id_user = :id_user AND `articles`.`is_active` = 1";
         $dbQuery = EDatabase::getInstance()->prepare($sql);
-        $dbQuery->bindParam(':idUtilisateur', $idUtilisateur);
+        $dbQuery->bindParam(':id_user', $idUtilisateur);
+        $dbQuery->execute();
+        return $dbQuery->fetchAll(PDO::FETCH_ASSOC);
+    } catch (PDOException $e) {
+        die('Erreur : ' . $e->getMessage());
+    }
+}
+
+function selectArticleById($idArt) {
+    try {
+        $sql = "SELECT * FROM `articles` LEFT JOIN `users` ON `articles`.`id_user` = `users`.`id_user` WHERE id_article = :id_article AND `articles`.`is_active` = 1";
+        $dbQuery = EDatabase::getInstance()->prepare($sql);
+        $dbQuery->bindParam(':id_article', $idArt);
+        $dbQuery->execute();
+        return $dbQuery->fetchAll(PDO::FETCH_ASSOC);
+    } catch (PDOException $e) {
+        die('Erreur : ' . $e->getMessage());
+    }
+}
+/*function selectAllArticleByTopics($idTopic) {
+    try {
+        $sql = "SELECT * FROM `articles` LEFT JOIN `topics` ON `articles`.`idArticles` = `topics`.`idArticle` WHERE idTopic = 1";
+        $dbQuery = EDatabase::getInstance()->prepare($sql);
+        $dbQuery->bindParam(':idArt', $idArt);
+        $dbQuery->execute();
+        return $dbQuery->fetchAll(PDO::FETCH_ASSOC);
+    } catch (PDOException $e) {
+        die('Erreur : ' . $e->getMessage());
+    }
+}*/
+
+function selectAllComByArticle($idArt) {
+    try {
+        $sql = "SELECT * FROM `comments` LEFT JOIN `users` ON `comments`.`id_user` = `users`.`id_user` WHERE id_article = :id_article";
+        $dbQuery = EDatabase::getInstance()->prepare($sql);
+        $dbQuery->bindParam(':id_article', $idArt);
         $dbQuery->execute();
         return $dbQuery->fetchAll(PDO::FETCH_ASSOC);
     } catch (PDOException $e) {
@@ -90,7 +138,7 @@ function getArticlesUser($idUtilisateur) {
  */
 function getArticlesPublic() {
     try {
-        $sql = "SELECT * FROM `articles` LEFT JOIN `utilisateur` ON `articles`.`idUtilisateur` = `utilisateur`.`idUtilisateur` WHERE `statutArticles` = 1";
+        $sql = "SELECT * FROM `articles` LEFT JOIN `users` ON `articles`.`id_user` = `users`.`id_user` WHERE `articles`.`is_active` = 1";
         $dbQuery = EDatabase::getInstance()->prepare($sql);
         $dbQuery->execute();
         return $dbQuery->fetchAll(PDO::FETCH_ASSOC);
@@ -105,7 +153,7 @@ function getArticlesPublic() {
  */
 function selectAll() {
     try {
-        $sql = "SELECT * FROM utilisateur";
+        $sql = "SELECT * FROM users";
         $dbQuery = EDatabase::getInstance()->prepare($sql);
         $dbQuery->execute();
         return $dbQuery->fetchAll(PDO::FETCH_ASSOC);
@@ -113,26 +161,11 @@ function selectAll() {
         die('Erreur : ' . $e->getMessage());
     }
 }
-
-/**
- * Récupere les articles privé de tous les utilisateurs
- * @return type
- */
-/* function getArticlesPrive() {
-  try {
-  $sql = "SELECT * FROM `articles` LEFT JOIN `utilisateur` ON `articles`.`idUtilisateur` = `utilisateur`.`idUtilisateur` WHERE `statutArticles` = 2";
-  $dbQuery = EDatabase::getInstance()->prepare($sql);
-  $dbQuery->execute();
-  return $dbQuery->fetchAll(PDO::FETCH_ASSOC);
-  } catch (PDOException $e) {
-  die('Erreur : ' . $e->getMessage());
-  }
-  } */
 function DelUser($id) {
     try {
-        $sql = 'DELETE FROM utilisateur WHERE idUtilisateur = :idUtilisateur';
+        $sql = 'DELETE FROM users WHERE id_user = :id_user';
         $dbQuery = EDatabase::getInstance()->prepare($sql);
-        $dbQuery->bindParam(':idUtilisateur', $id);
+        $dbQuery->bindParam(':id_user', $id);
         $dbQuery->execute();
     } catch (PDOException $e) {
         die('Erreur : ' . $e->getMessage());
@@ -141,12 +174,12 @@ function DelUser($id) {
 
 function UpdateUsers($infoModif) {
     try {
-        $sql = 'UPDATE `utilisateur` SET `prenom`= :prenom ,`nom`= :nom,`courriel`= :courriel WHERE idUtilisateur = :idUtilisateur';
+        $sql = 'UPDATE `users` SET `first_name`= :first_name ,`last_name`= :last_name,`email`= :email WHERE id_user = :id_user';
         $dbQuery = EDatabase::getInstance()->prepare($sql);
-        $dbQuery->bindParam(':idUtilisateur', $infoModif["idModif"]);
-        $dbQuery->bindParam(':prenom', $infoModif["prenomModif"]);
-        $dbQuery->bindParam(':nom', $infoModif["nomModif"]);
-        $dbQuery->bindParam(':courriel', $infoModif["emailModif"]);
+        $dbQuery->bindParam(':id_user', $infoModif["idModif"]);
+        $dbQuery->bindParam(':first_name', $infoModif["prenomModif"]);
+        $dbQuery->bindParam(':last_name', $infoModif["nomModif"]);
+        $dbQuery->bindParam(':email', $infoModif["emailModif"]);
         $dbQuery->execute();
     } catch (PDOException $e) {
         die('Erreur : ' . $e->getMessage());
@@ -155,7 +188,7 @@ function UpdateUsers($infoModif) {
 
 function selectUserById($slt) {
     try {
-        $sql = "SELECT * FROM utilisateur WHERE idUtilisateur = :idModified";
+        $sql = "SELECT * FROM users WHERE id_user = :idModified";
         $dbQuery = EDatabase::getInstance()->prepare($sql);
         $dbQuery->bindParam(':idModified', $slt["id"]);
         $dbQuery->execute();
@@ -167,9 +200,9 @@ function selectUserById($slt) {
 
 function getModifArticlesUserById($idArticles) {
     try {
-        $sql = "SELECT * FROM `articles` WHERE idArticles = :idArticles";
+        $sql = "SELECT * FROM `articles` WHERE id_article = :id_article";
         $dbQuery = EDatabase::getInstance()->prepare($sql);
-        $dbQuery->bindParam(':idArticles', $idArticles);
+        $dbQuery->bindParam(':id_article', $idArticles);
         $dbQuery->execute();
         return $dbQuery->fetchAll(PDO::FETCH_ASSOC);
     } catch (PDOException $e) {
@@ -180,12 +213,11 @@ function getModifArticlesUserById($idArticles) {
 function UpdateModifiedArticlesUserById($infoModifArticles) {
 
     try {
-        $sql = 'UPDATE `articles` SET `titre`= :titre ,`contenu`= :contenu WHERE idArticles = :idArticles';
+        $sql = 'UPDATE `articles` SET `title`= :title ,`content`= :content WHERE id_article = :id_article';
         $dbQuery = EDatabase::getInstance()->prepare($sql);
-        $dbQuery->bindParam(':idArticles', $infoModifArticles["idModifArticles"]);
-        $dbQuery->bindParam(':titre', $infoModifArticles["titreModifArticles"]);
-        $dbQuery->bindParam(':contenu', $infoModifArticles["contenuModifArticles"]);
-        //$dbQuery->bindParam(':courriel', $infoModifArticles["emailModif"]);
+        $dbQuery->bindParam(':id_article', $infoModifArticles["idModifArticles"]);
+        $dbQuery->bindParam(':title', $infoModifArticles["titreModifArticles"]);
+        $dbQuery->bindParam(':content', $infoModifArticles["contenuModifArticles"]);
         $dbQuery->execute();
     } catch (PDOException $e) {
         die('Erreur : ' . $e->getMessage());
@@ -194,9 +226,9 @@ function UpdateModifiedArticlesUserById($infoModifArticles) {
 
 function CacheArticleById($idArt) {
     try {
-        $sql = 'UPDATE `articles` SET`statutArticles`= "2" WHERE `idArticles`= :idArt ';
+        $sql = 'UPDATE `articles` SET`is_active`= "2" WHERE `id_article`= :id_article ';
         $dbQuery = EDatabase::getInstance()->prepare($sql);
-        $dbQuery->bindParam(':idArt', $idArt);
+        $dbQuery->bindParam(':id_article', $idArt);
         $dbQuery->execute();
     } catch (PDOException $e) {
         die('Erreur : ' . $e->getMessage());
@@ -205,7 +237,7 @@ function CacheArticleById($idArt) {
 
 function CacheAllArticles() {
     try {
-        $sql = 'UPDATE `articles` SET`statutArticles`= "2" WHERE 1';
+        $sql = 'UPDATE `articles` SET`is_active`= "2" WHERE 1';
         $dbQuery = EDatabase::getInstance()->prepare($sql);
         $dbQuery->execute();
     } catch (PDOException $e) {

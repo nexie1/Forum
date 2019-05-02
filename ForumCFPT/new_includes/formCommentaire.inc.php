@@ -17,15 +17,11 @@ if (!isset($_SESSION["Connected"])) {
         <article>
             <table>
                 <tr>
-                    <td>Titre Article</td>
-                    <td><input name="title" type="text" placeholder="Titre de l'article" value="" required tabindex="1"></td>
-                </tr>
-                <tr>
                     <td>Contenu</td>
-                    <td><textarea style="width: 300px; height: 300px;" name="content" placeholder="Contenu de l'article" required tabindex="2"></textarea></td>
+                    <td><textarea style="width: 300px; height: 300px;" name="commentaire" placeholder="Contenu de l'article" required tabindex="2"></textarea></td>
                 </tr>
                 <tr>
-                    <td><input type="submit" name="SubArticle" value="Créer un article" tabindex="3"></td>
+                    <td><input type="submit" name="SubCommentaire" value="Créer un commentaire" tabindex="3"></td>
                 </tr>
             </table>
         </article>

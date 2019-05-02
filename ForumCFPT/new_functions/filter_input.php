@@ -1,10 +1,17 @@
 <?php
+/*
+ * Auteur       : Fernandes Marco
+ * Description  : Forum du CFPT
+ * Version      : 1.0.0
+ * Date         : 07.05.2019
+ * Copyright    : Fernandes Marco
+ */
 
 $PSEUDO = "pseudo";
-$NOM = "nom";
-$PRENOM = "prenom";
-$COURRIEL = "courriel";
-$MOTDEPASSE = "motDePasse";
+$NOM = "last_name";
+$PRENOM = "first_name";
+$COURRIEL = "email";
+$MOTDEPASSE = "password";
 
 //Filtre les entrées des formulaires du site pour eviter l'injection
 $info[$PSEUDO] = (isset($_POST[$PSEUDO]) ? filter_var($_POST[$PSEUDO], FILTER_SANITIZE_STRING) : "");
@@ -12,16 +19,6 @@ $info[$NOM] = (isset($_POST[$NOM]) ? filter_var($_POST[$NOM], FILTER_SANITIZE_ST
 $info[$PRENOM] = (isset($_POST[$PRENOM]) ? filter_var($_POST[$PRENOM], FILTER_SANITIZE_STRING) : "");
 $info[$COURRIEL] = (isset($_POST[$COURRIEL]) ? filter_var($_POST[$COURRIEL], FILTER_SANITIZE_EMAIL) : "");
 $info[$MOTDEPASSE] = (isset($_POST[$MOTDEPASSE]) ? hash("sha1", filter_var($_POST[$MOTDEPASSE], FILTER_SANITIZE_STRING)) : "");
-
-$TITRE_ART = "titre";
-$CONTENU_ART = "contenu";
-$STATUT_ART = "statutArticles";
-$DATE_ART = "dateArticles";
-
-$article[$TITRE_ART] = (isset($_POST[$TITRE_ART]) ? filter_var($_POST[$TITRE_ART], FILTER_SANITIZE_STRING) : "");
-$article[$CONTENU_ART] = (isset($_POST[$CONTENU_ART]) ? filter_var($_POST[$CONTENU_ART], FILTER_SANITIZE_STRING) : "");
-$article[$STATUT_ART] = (isset($_POST[$STATUT_ART]) ? filter_var($_POST[$STATUT_ART], FILTER_VALIDATE_INT) : "");
-$article[$DATE_ART] = date('Y-m-d');
 
 $ID_MODIF = "idModif";
 $PRENOM_MODIF = "prenomModif";
@@ -42,4 +39,20 @@ $infoModifArticles[$id_ModifArticles] = (isset($_POST[$id_ModifArticles]) ? filt
 $infoModifArticles[$titre_ModifArticles] = (isset($_POST[$titre_ModifArticles]) ? filter_input(INPUT_POST, $titre_ModifArticles, FILTER_SANITIZE_STRING) : "");
 $infoModifArticles[$contenu_ModifArticles] = (isset($_POST[$contenu_ModifArticles]) ? filter_input(INPUT_POST, $contenu_ModifArticles, FILTER_SANITIZE_STRING) : "");
 
+$TITRE_ART = "title";
+$CONTENU_ART = "content";
+$STATUT_ART = "is_active";
+$DATE_ART = "creation_date";
+
+$article[$TITRE_ART] = (isset($_POST[$TITRE_ART]) ? filter_var($_POST[$TITRE_ART], FILTER_SANITIZE_STRING) : "");
+$article[$CONTENU_ART] = (isset($_POST[$CONTENU_ART]) ? filter_var($_POST[$CONTENU_ART], FILTER_SANITIZE_STRING) : "");
+$article[$STATUT_ART] = (isset($_POST[$STATUT_ART]) ? filter_var($_POST[$STATUT_ART], FILTER_VALIDATE_INT) : "");
+$article[$DATE_ART] = date('Y-m-d');
+
+
+/*$CONTENU_COM = "content_com";
+$DATE_COM = "creation_date_com";
+
+$comments[$CONTENU_COM] = (isset($_POST[$CONTENU_COM]) ? filter_var($_POST[$CONTENU_COM], FILTER_SANITIZE_STRING) : "");
+$comments[$DATE_COM] = date('Y-m-d');*/
 

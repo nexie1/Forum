@@ -2,8 +2,8 @@
 /*
  * Auteur       : Fernandes Marco
  * Description  : Forum du CFPT
- * Version      : 3.0.0
- * Date         : 10.10.2018
+ * Version      : 1.0.0
+ * Date         : 07.05.2019
  * Copyright    : Fernandes Marco
  */
 ?>
@@ -17,15 +17,15 @@
                 <table>
                     <tr>
                         <td>Titre Article</td>                     
-                        <td><input name="titreModifArticles" type="text" placeholder=" Titre de l'article" value="<?= $value["titre"] ?>"></td>
+                        <td><input name="titreModifArticles" type="text" placeholder=" Titre de l'article" value="<?= $value["title"] ?>"></td>
                     </tr>
                     <tr>
                         <td>Contenu</td>
-                        <td><textarea style="width: 300px; height: 300px;" name="contenuModifArticles" placeholder="Contenu de l'article"><?= $value["contenu"] ?></textarea></td>
+                        <td><textarea style="width: 300px; height: 300px;" name="contenuModifArticles" placeholder="Contenu de l'article"><?= $value["content"] ?></textarea></td>
                     </tr>
                     <tr>
                         <td>idArt</td>
-                        <td><input readonly="" name="idModifArticles" type="text" placeholder=" id de l'article" value="<?= $idArticles ?>"></td>
+                        <td><input readonly="" name="idModifArticles" type="text" placeholder=" id de l'article" value="<?= $id_article ?>"></td>
                     </tr>                    
                     <tr>
                         <td><input type="submit" name="ValidModifArticle" value="Valider"></td>

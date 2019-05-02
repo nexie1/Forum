@@ -2,8 +2,8 @@
 /*
  * Auteur       : Fernandes Marco
  * Description  : Forum du CFPT
- * Version      : 3.0.0
- * Date         : 10.10.2018
+ * Version      : 1.0.0
+ * Date         : 07.05.2019
  * Copyright    : Fernandes Marco
  */
 ?>
@@ -17,7 +17,7 @@
                 </tr>
                 <tr>
                     <td>Mot de passe</td>
-                    <td><input name="motDePasse" type="password" placeholder="Entrez un mot de passe" value="" required></td>
+                    <td><input name="password" type="password" placeholder="Entrez un mot de passe" value="" required></td>
                 </tr>
                 <tr>
                     <td><input type="submit" name="Login" value="Se connecter"></td>

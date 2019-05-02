@@ -1,10 +1,9 @@
 <?php
-
 /*
  * Auteur       : Fernandes Marco
  * Description  : Forum du CFPT
- * Version      : 3.0.0
- * Date         : 10.10.2018
+ * Version      : 1.0.0
+ * Date         : 07.05.2019
  * Copyright    : Fernandes Marco
  */
 
@@ -13,7 +12,7 @@ $_SESSION["CreationInscr"] = "Pas Rempli";
 if (isset($_POST["Submit"])) {
     //Verifie si les 2 mots de passes sont égaux + captcha
     if ($_POST["CopieCaptcha"] == $_SESSION['captcha']) {
-        if ($_POST["motDePasse"] == $_POST["motDePasseConfirm"]) {
+        if ($_POST["password"] == $_POST["passwordConfirm"]) {
             addUser($info);
             $_SESSION["CreationInscr"] = "Complet";
         } else {

@@ -2,8 +2,8 @@
 /*
  * Auteur       : Fernandes Marco
  * Description  : Forum du CFPT
- * Version      : 3.0.0
- * Date         : 10.10.2018
+ * Version      : 1.0.0
+ * Date         : 07.05.2019
  * Copyright    : Fernandes Marco
  */
 ?>
@@ -19,21 +19,21 @@
                 <a class="nav-link" href="index.php?page=Index">Index</a>
             </li>
             <li class="nav-item">
-                <?php if (isset($_SESSION["Connected"]) && $_SESSION["statut"] == 2) { ?>
+                <?php if (isset($_SESSION["Connected"]) && $_SESSION["is_admin"] == 2) { ?>
                     <a class="nav-link" href="index.php?page=MesArticles">Mes articles</a>
                     <?php
                 }
                 ?>
             </li>
             <li class="nav-item">
-                <?php if (isset($_SESSION["Connected"]) && $_SESSION["statut"] == 2) { ?>
+                <?php if (isset($_SESSION["Connected"]) && $_SESSION["is_admin"] == 2) { ?>
                     <a class="nav-link" href="index.php?page=ManageUsers">Gerer Utilisateur</a>
                     <?php
                 }
                 ?>
             </li>
             <li class="nav-item">
-                <?php if (isset($_SESSION["Connected"]) && $_SESSION["statut"] == 1) { ?>
+                <?php if (isset($_SESSION["Connected"]) && $_SESSION["is_admin"] == 1) { ?>
                     <a class="nav-link" href="index.php?page=MesArticles">Mes articles</a>
                     <?php
                 }

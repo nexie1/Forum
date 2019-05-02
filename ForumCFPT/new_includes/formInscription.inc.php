@@ -2,8 +2,8 @@
 /*
  * Auteur       : Fernandes Marco
  * Description  : Forum du CFPT
- * Version      : 3.0.0
- * Date         : 10.10.2018
+ * Version      : 1.0.0
+ * Date         : 07.05.2019
  * Copyright    : Fernandes Marco
  */
 ?>
@@ -17,23 +17,23 @@
                 </tr>
                 <tr>
                     <td>Nom</td>
-                    <td><input name="nom" type="text" placeholder="Entrez votre nom" value="<?=$info["nom"]; ?>" required tabindex="2"></td>
+                    <td><input name="last_name" type="text" placeholder="Entrez votre nom" value="<?=$info["last_name"]; ?>" required tabindex="2"></td>
                 </tr>
                 <tr>
                     <td>Prénom</td>
-                    <td><input name="prenom" type="text" placeholder="Entrez votre prénom" value="<?= $info["prenom"]; ?>" required tabindex="3"></td>
+                    <td><input name="first_name" type="text" placeholder="Entrez votre prénom" value="<?= $info["first_name"]; ?>" required tabindex="3"></td>
                 </tr>
                 <tr>
                     <td>Courriel</td>
-                    <td><input name="courriel" type="email" placeholder="Entrez votre email" value="<?= $info["courriel"]; ?>" required tabindex="4"></td>
+                    <td><input name="email" type="email" placeholder="Entrez votre email" value="<?= $info["email"]; ?>" required tabindex="4"></td>
                 </tr>
                 <tr>
                     <td>Mot de passe</td>
-                    <td><input name="motDePasse" type="password" placeholder="Entrez un mot de passe" value="" required tabindex="5"></td>
+                    <td><input name="password" type="password" placeholder="Entrez un mot de passe" value="" required tabindex="5"></td>
                 </tr>
                 <tr>
                     <td>Repeter mot de passe</td>
-                    <td><input name="motDePasseConfirm" type="password" placeholder="Retapez mot de passe" value="" required tabindex="6"></td>
+                    <td><input name="passwordConfirm" type="password" placeholder="Retapez mot de passe" value="" required tabindex="6"></td>
                 </tr>
                 <TR>
                     <td>

@@ -2,8 +2,8 @@
 /*
  * Auteur       : Fernandes Marco
  * Description  : Forum du CFPT
- * Version      : 3.0.0
- * Date         : 10.10.2018
+ * Version      : 1.0.0
+ * Date         : 07.05.2019
  * Copyright    : Fernandes Marco
  */
 ?>
@@ -11,7 +11,7 @@
     <?php
 
     if (isset($_SESSION["Connected"]) && $page == "MesArticles") {
-        $tableArticlesUser = getArticlesUser($_SESSION["idUtilisateur"]);
+        $tableArticlesUser = getArticlesUser($_SESSION["id_user"]);
 
         foreach ($tableArticlesUser as $value) {
             include '/new_includes/mesArticles.php';
